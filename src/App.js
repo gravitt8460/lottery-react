@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import web3 from './web3';
-import lottery from './lottery';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import web3 from "./web3";
+import lottery from "./lottery";
 
 class App extends Component {
-
   state = {
-    manager: '',
-    players: '',
-    balance: '',
-    value: '',
-    message: ''
+    manager: "",
+    players: "",
+    balance: "",
+    value: "",
+    message: ""
   };
 
   async componentDidMount() {
@@ -23,35 +22,36 @@ class App extends Component {
     this.setState({ manager, players, balance });
   }
 
-  onSubmit = async (event) => {
+  onSubmit = async event => {
     // prevents normal form submission
     event.preventDefault();
 
     const accounts = await web3.eth.getAccounts();
 
     // put this in a bit later
-    this.setState({ message: 'Waiting on transaction success...' });
+    this.setState({ message: "Waiting on transaction success..." });
 
     await lottery.methods.enter().send({
       from: accounts[0],
-      value: web3.utils.toWei(this.state.value, 'ether')
+      value: web3.utils.toWei(this.state.value, "ether")
     });
 
     // put this in a bit later
-    this.setState({ message: 'You have been entered!' });
+    this.setState({ message: "You have been entered!" });
   };
 
-  onClick = async (event) => {
+  onClick = async event => {
     const accounts = await web3.eth.getAccounts();
 
-    this.setState({ message: 'Waiting on transaction success...' });
+    this.setState({ message: "Waiting on transaction success..." });
 
-    console.log(await lottery.methods.pickWinner().send({
-      from: accounts[0]
-    }));
+    console.log(
+      await lottery.methods.pickWinner().send({
+        from: accounts[0]
+      })
+    );
 
-    this.setState({ message: 'Winner has been picked!' });
-
+    this.setState({ message: "Winner has been picked!" });
   };
 
   render() {
@@ -59,13 +59,13 @@ class App extends Component {
       <div>
         <h2>Lottery Contract</h2>
         <p>
-          This contract is managed by {this.state.manager}.
-          There are {this.state.players.length} people entered,
-          competing to win {web3.utils.fromWei(this.state.balance, 'ether')} ether!
+          This contract is managed by {this.state.manager}. There are{" "}
+          {this.state.players.length} people entered, competing to win{" "}
+          {web3.utils.fromWei(this.state.balance, "ether")} ether!
         </p>
         <hr />
 
-        <form onSubmit={this.onSubmit} >
+        <form onSubmit={this.onSubmit}>
           <h4>Want to try your luck?</h4>
           <div>
             <label>Amount of ether to enter</label>
